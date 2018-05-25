@@ -1,0 +1,1108 @@
+#include <iostream>
+#include <ctime>
+#include <string>
+#include <tuple>
+# include<windows.h>
+#include <fstream>
+
+const int capacity=100;
+
+using namespace std;
+
+struct laptop {
+	string processor, sresolution, ram, harddisk, windows, videocard;
+};
+
+
+struct DigitalCamera {
+	string megapixel, flash, cardsupported, sresolution;
+};
+
+struct Television {
+	string cardsupported, sresolution, hdmi, usb, volts, height,width;
+};
+
+struct HomeThetre {
+	string cardsupported, bluetooth, channel, usb, volts;
+};
+
+struct Printers {
+	string cardsupported, bluetooth, functions, usb, volts, ptype, pcapability;
+};
+
+struct Electronics {
+
+	Electronics() {
+		time_t t = time(0);
+		struct tm * now = localtime(&t);
+		hour = now->tm_hour;
+		minute = now->tm_min;
+		day = now->tm_mday;
+		month = now->tm_mon;
+		year = now->tm_year;
+	
+	}
+
+	string brand,pname,desc,supplier,status;
+	double weight;
+	int pid,price,stockqty, hour, minute,day,month,year;
+	Electronics *prev, *next;
+
+	laptop l;
+	DigitalCamera d;
+	Television t;
+	Printers p;
+	HomeThetre h;
+
+} *root = NULL;
+
+
+
+
+class Functions {
+	public:
+
+		void DisplayfromfileLaptop(Electronics *arr[],int i)
+		{
+			ifstream read("Laptop's Inventory.txt");
+			string line;
+			Electronics *head1 = arr[i];
+			while (!read.eof())
+			{
+				Electronics *obj = new Electronics;
+				obj->next = NULL;
+				getline(read, line);
+				if (!line.empty())
+				{
+					obj->brand = line;
+					getline(read, line);
+					cout <<"Brand Name is :" <<obj->brand << endl;
+
+					obj->pname = line;
+					getline(read, line);
+					cout << "Product Name is :" << obj->pname << endl;
+
+					obj->desc = line;
+					getline(read, line);
+					cout << "Product Description :" << obj->desc << endl;
+
+					obj->supplier = line;
+					getline(read, line);
+					cout << "Supplier Name is :" << obj->supplier << endl;
+
+					obj->status = line;
+					getline(read, line);
+					cout << "Product Status is :" << obj->status << endl;
+
+					double dnumber = atoi(line.c_str());
+					obj->weight = dnumber; // may have a mistake
+					getline(read, line);
+					cout << "Product Weight is :" << obj->weight << endl;
+
+					int number = atoi(line.c_str());
+					obj->price = number;
+					getline(read, line);
+					cout << "Product Price is :" << obj->price << endl;
+
+					obj->stockqty = number;
+					getline(read, line);
+					cout << "Product Qty is :" << obj->stockqty << endl;
+
+					//processor, sresolution, ram, harddisk, windows, videocard;
+
+					obj->l.processor = line;
+					getline(read, line);
+					cout << "Processor :" << obj->l.processor << endl;
+
+					obj->l.sresolution = line;
+					getline(read, line);
+					cout <<"Screen Resolution :" << obj->l.sresolution << endl;
+					
+					obj->l.ram = line;
+					getline(read, line);
+					cout << "RAM :" << obj->l.ram << endl;
+
+					obj->l.harddisk = line;
+					getline(read, line);
+					cout << "Hard Disk :" << obj->l.harddisk << endl;
+
+					obj->l.windows = line;
+					getline(read, line);
+					cout << "Windows Version :" << obj->l.windows << endl;
+					
+					obj->l.videocard = line;
+					getline(read, line);
+					cout << "Video Card :" << obj->l.videocard << endl;
+					
+					//LoadtoLaptop(arr,i,obj);
+				}
+			}
+		}
+
+
+
+		void filingofDC(Electronics *arr[], int i, Electronics *&newnode) {
+			ofstream obj("Digital Camera's Inventory.txt");
+			Electronics *temp = arr[i];
+			while (temp != NULL) {
+				obj << newnode->brand << endl;
+				obj << newnode->pname << endl;
+				obj << newnode->desc << endl;
+				obj << newnode->supplier << endl;
+				obj << newnode->status << endl;
+				obj << newnode->weight << endl;
+				obj << newnode->price << endl;
+				obj << newnode->stockqty << endl;
+				obj << newnode->d.megapixel << endl;
+				obj << newnode->d.sresolution << endl;
+				obj << newnode->d.cardsupported << endl;
+				obj << newnode->d.flash << endl;
+
+				temp = temp->next;
+			}
+			obj.close();
+		}
+
+
+		void filingoflaptop(Electronics *arr[], int i, Electronics *&newnode) {
+			ofstream obj("Laptop's Inventory.txt");
+			Electronics *temp = arr[i];
+			while (temp != NULL) {
+				obj << newnode->brand << endl;
+				obj << newnode->pname << endl;
+				obj << newnode->desc << endl;
+				obj << newnode->supplier << endl;
+				obj << newnode->status << endl;
+				obj << newnode->weight << endl;
+				obj << newnode->price << endl;
+				obj << newnode->stockqty << endl;
+				obj << newnode->l.processor << endl;
+				obj << newnode->l.sresolution << endl;
+				obj << newnode->l.ram << endl;
+				obj << newnode->l.harddisk << endl;
+				obj << newnode->l.windows << endl;
+				obj << newnode->l.videocard << endl;
+
+				temp = temp->next;
+			}
+			obj.close();
+		}
+
+
+		void filingofPrinter(Electronics *arr[], int i, Electronics *&newnode) {
+			ofstream obj("Printer's Inventory.txt");
+			Electronics *temp = arr[i];
+			while (temp != NULL) {
+				obj << newnode->brand << endl;
+				obj << newnode->pname << endl;
+				obj << newnode->desc << endl;
+				obj << newnode->supplier << endl;
+				obj << newnode->status << endl;
+				obj << newnode->weight << endl;
+				obj << newnode->price << endl;
+				obj << newnode->stockqty << endl;
+				obj << newnode->p.cardsupported << endl;
+				obj << newnode->p.functions << endl;
+				obj << newnode->p.usb << endl;
+				obj << newnode->p.volts << endl;
+				obj << newnode->p.ptype << endl;
+				obj << newnode->p.pcapability << endl;
+
+				temp = temp->next;
+			}
+			obj.close();
+		}
+
+		void filingofHomeThetre(Electronics *arr[], int i, Electronics *&newnode) {
+			ofstream obj("HomeThetre's Inventory.txt");
+			Electronics *temp = arr[i];
+			while (temp != NULL) {
+				obj << newnode->brand << endl;
+				obj << newnode->pname << endl;
+				obj << newnode->desc << endl;
+				obj << newnode->supplier << endl;
+				obj << newnode->status << endl;
+				obj << newnode->weight << endl;
+				obj << newnode->price << endl;
+				obj << newnode->stockqty << endl;
+				obj << newnode->h.cardsupported << endl;
+				obj << newnode->h.channel << endl;
+				obj << newnode->h.usb << endl;
+				obj << newnode->h.volts << endl;
+
+				temp = temp->next;
+			}
+			obj.close();
+		}
+
+
+		void filingofTelevision(Electronics *arr[], int i,Electronics *&newnode) {
+			ofstream obj("Television's Inventory.txt");
+			Electronics *temp = arr[i];
+			while (temp != NULL) {
+				obj << newnode->brand << endl;
+				obj << newnode->pname << endl;
+				obj << newnode->desc << endl;
+				obj << newnode->supplier << endl;
+				obj << newnode->status << endl;
+				obj << newnode->weight << endl;
+				obj << newnode->price << endl;
+				obj << newnode->stockqty << endl;
+				obj << newnode->t.cardsupported << endl;
+				obj << newnode->t.sresolution << endl;
+				obj << newnode->t.hdmi << endl;
+				obj << newnode->t.usb << endl;
+				obj << newnode->t.volts << endl;
+				obj << newnode->t.height << endl;
+				obj << newnode->t.width << endl;
+
+				temp = temp->next;
+			}
+			obj.close();
+		}
+
+
+
+		tuple<string, string, string, string, string, double, int, int> InputOfCommonAttribute() {
+
+			int price, stockqty;
+			double weight;
+			string brand, pname, desc, supplier, status;
+
+			cout << "Enter Brand Name " << endl;
+			cin.get();
+			getline(cin, brand);
+			cout << "Enter Product Name " << endl;
+			cin.get();
+			getline(cin, pname);
+			cout << "Enter Description about Product" << endl;
+			cin.get();
+			getline(cin, desc);
+			cout << "Enter Suppier's Name" << endl;
+			cin.get();
+			getline(cin, supplier);
+			cout << "Enter Status of Product, whether it is ready to sale or needs modifications" << endl;
+			cin.get();
+			getline(cin, status);
+			cout << "Enter Weight of Product (Datatype 'Double')" << endl;
+			cin.get();
+			cin >> weight;
+			cout << "Enter Price " << endl;
+			cin.get();
+			cin >> price;
+			cout << "Enter How many number of Quantity is Stocking " << endl;
+			cin.get();
+			cin >> stockqty;
+
+			return make_tuple(brand,pname, desc, supplier, status, weight, price, stockqty);
+			
+			//return make_tuple<string, string, string, string, string, string, double, int, int>(brand& brand,pname& pname,desc& desc,supplier& supplier,status& status,weight& weight,price& price,stockqty& stockqty);
+		}
+
+
+		void CommonAttributesAssigning(Electronics *arr[], int i,Electronics * &newnode, string brand, string pname, string desc, string supplier, string status, double weight, int price, int stockqty) {
+			newnode->brand = brand;
+			newnode->pname = pname;
+			newnode->desc = desc;
+			newnode->supplier = supplier;
+			newnode->status = status;
+			newnode->weight = weight;
+			newnode->price = price;
+			newnode->stockqty = stockqty;
+		}
+
+
+		void insertatendofPrinters(Electronics *arr[], int i, string brand, string pname, string desc, string supplier, string status, double weight, int price, int stockqty, string cardsupported, string bluetooth, string functions, string usb, string volts,string ptype,string pcapability) {
+
+			Electronics *newnode = new Electronics;
+
+			CommonAttributesAssigning(arr,i,newnode,brand,pname,desc,supplier,status,weight,price,stockqty);
+
+			newnode->p.cardsupported= cardsupported;
+			newnode->p.functions= functions;
+			newnode->p.usb = usb;
+			newnode->p.volts = volts;
+			newnode->p.ptype = ptype;
+			newnode->p.pcapability = pcapability;
+
+			newnode->next = NULL;
+			newnode->prev = NULL;
+			if (arr[i] == NULL) {
+				root = newnode;
+				arr[i] = root;
+
+			}
+			else {
+				Electronics *temp = arr[i];
+				while (temp->next != NULL) {
+					temp = temp->next;
+				}
+				temp->next = newnode;
+				newnode->prev = temp;
+			}
+			filingofPrinter(arr, i, newnode);
+
+		}
+
+
+		void insertatendofHomethetre(Electronics *arr[], int i, string brand, string pname, string desc, string supplier, string status, double weight, int price, int stockqty, string cardsupported, string bluetooth, string channel, string usb, string volts) {
+
+			Electronics *newnode = new Electronics;
+
+			CommonAttributesAssigning(arr, i, newnode, brand, pname, desc, supplier, status, weight, price, stockqty);
+
+			newnode->h.cardsupported = cardsupported;
+			newnode->h.channel = channel;
+			newnode->h.usb = usb;
+			newnode->h.volts = volts;
+
+			newnode->next = NULL;
+			newnode->prev = NULL;
+			if (arr[i] == NULL) {
+				root = newnode;
+				arr[i] = root;
+
+			}
+			else {
+				Electronics *temp = arr[i];
+				while (temp->next != NULL) {
+					temp = temp->next;
+				}
+				temp->next = newnode;
+				newnode->prev = temp;
+			}
+
+			filingofHomeThetre(arr, i, newnode);
+		}
+
+
+		
+		void insertatendoftelevision(Electronics *arr[], int i, string brand, string pname, string desc, string supplier, string status, double weight, int price, int stockqty, string cardsupported, string sresolution, string hdmi, string usb, string volts, string height, string width) {
+
+			Electronics *newnode = new Electronics;
+
+			CommonAttributesAssigning(arr, i, newnode, brand, pname, desc, supplier, status, weight, price, stockqty);
+
+			newnode->t.cardsupported = cardsupported;
+			newnode->t.sresolution = sresolution;
+			newnode->t.hdmi = hdmi;
+			newnode->t.usb = usb;
+			newnode->t.volts = volts;
+			newnode->t.height = height;
+			newnode->t.width = width;
+
+
+			newnode->next = NULL;
+			newnode->prev = NULL;
+			if (arr[i] == NULL) {
+				root = newnode;
+				arr[i] = root;
+
+			}
+			else {
+				Electronics *temp = arr[i];
+				while (temp->next != NULL) {
+					temp = temp->next;
+				}
+				temp->next = newnode;
+				newnode->prev = temp;
+			}
+
+			filingofTelevision(arr,i,newnode);
+
+		}
+
+
+		
+	void insertatendofDC(Electronics *arr[], int i, string brand, string pname, string desc, string supplier, string status, double weight, int price, int stockqty, string megapixel, string sresolution, string cardsupported, string flash) {
+
+			Electronics *newnode = new Electronics;
+
+			CommonAttributesAssigning(arr, i, newnode, brand, pname, desc, supplier, status, weight, price, stockqty);
+
+			newnode->d.megapixel= megapixel;
+			newnode->d.sresolution = sresolution;
+			newnode->d.cardsupported = cardsupported;
+			newnode->d.flash = flash;
+	
+
+			newnode->next = NULL;
+			newnode->prev = NULL;
+			if (arr[i] == NULL) {
+				root = newnode;
+				arr[i] = root;
+
+			}
+			else {
+				Electronics *temp = arr[i];
+				while (temp->next != NULL) {
+					temp = temp->next;
+				}
+				temp->next = newnode;
+				newnode->prev = temp;
+			}
+			filingofDC(arr, i, newnode);
+		}
+
+		
+
+	void insertatendofLaptop(Electronics *arr[],int i, string brand,string pname,string desc,string supplier,string status,double weight,int price,int stockqty,string processor, string sresolution, string ram, string harddisk, string windows, string videocard) {
+
+		Electronics *newnode = new Electronics;
+
+		CommonAttributesAssigning(arr, i, newnode, brand, pname, desc, supplier, status, weight, price, stockqty);
+		
+		
+
+		newnode->l.processor = processor;
+		newnode->l.sresolution = sresolution;
+		newnode->l.ram = ram;
+		newnode->l.harddisk = harddisk;
+		newnode->l.windows = windows;
+		newnode->l.videocard = videocard;
+		
+		
+		newnode->next = NULL;
+		newnode->prev = NULL;
+		if (arr[i]==NULL) {
+			root = newnode;
+			arr[i] = root;
+			
+		}
+		else {
+			Electronics *temp =arr[i];
+			while (temp->next != NULL) {
+				temp = temp->next;
+			}
+			temp->next = newnode;
+			newnode->prev = temp;
+		}
+		filingoflaptop(arr, i, newnode);
+	}
+
+
+	void display(Electronics *arr[], int i)
+	{
+		Electronics *temp = arr[i];
+		if (temp == NULL)
+			cout << "Nothing to display" << endl;
+		else
+			while (temp != NULL) {  //akhir tak jaega
+
+				cout << "Brand Name is :" << temp->brand << endl;
+				cout << "Product Name is :" << temp->pname << endl;
+				cout << "Product Description :" << temp->desc << endl;
+				cout << "Supplier Name is :" << temp->supplier << endl;
+				cout << "Product Status is :" << temp->status << endl;
+				cout << "Product Weight is :" << temp->weight << endl;
+				cout << "Product Price is :" << temp->price << endl;
+				cout << "Product Qty is :" << temp->stockqty << endl;
+				cout << "Time when Product Added :" << temp->hour << ":" << temp->minute << endl;
+				cout << "Date when Product Added :" << temp->day << "/" << temp->month+1 << "/" << temp->year-100 << endl;
+
+
+
+				if (i==0) {
+					cout << "Processor :" << temp->l.processor << endl;
+					cout << "Screen Resolution :" << temp->l.sresolution << endl;
+					cout << "RAM :" << temp->l.ram << endl;
+					cout << "Hard Disk :" << temp->l.harddisk << endl;
+					cout << "Windows Version :" << temp->l.windows << endl;
+					cout << "Video Card :" << temp->l.videocard << endl;
+				}
+
+				else if (i == 1) {
+					cout << "MegaPixels :" << temp->d.megapixel << endl;
+					cout << "Screen Resolution of Monitor :" << temp->d.sresolution << endl;
+					cout << "Card Supported :" << temp->d.cardsupported << endl;
+					cout << "Flash :" << temp->d.flash << endl;
+				}
+				else if (i == 2) {
+					cout << "Card Supported :" << temp->t.cardsupported << endl;
+					cout << "Screen Resolution :" << temp->t.sresolution << endl;
+					cout << "HDMI :" << temp->t.hdmi << endl;
+					cout << "USB :" << temp->t.usb << endl;
+					cout << "Volts :" << temp->t.volts << endl;
+					cout << "Height :" << temp->t.height << endl;
+					cout << "Width :" << temp->t.width << endl;
+				}
+				else if (i == 3) {
+					cout << "Card Suppoerted :" << temp->h.cardsupported << endl;
+					cout << "Channel :" << temp->h.channel << endl;
+					cout << "USB :" << temp->h.usb << endl;
+					cout << "Volts :" << temp->h.volts << endl;
+				}
+				else if (i == 4) {
+					cout << "Card Supported :" << temp->p.cardsupported << endl;
+					cout << "Functions :" << temp->p.functions << endl;
+					cout << "USB :" << temp->p.usb << endl;
+					cout << "Volts :" << temp->p.volts << endl;
+					cout << "Printer Type :" << temp->p.ptype << endl;
+					cout << "Printer Capability :" << temp->p.pcapability << endl;
+				}
+
+
+				temp = temp->next;
+			}
+
+	}
+
+	void deletenode(Electronics *arr[], int i, string pname) {
+		Electronics *temp = arr[i];
+
+		if (temp == NULL)
+			cout << "Nothing to Delete" << endl;
+		else
+			if (temp->prev == NULL && temp->next == NULL) {
+				arr[i] = NULL;
+			}
+			else {
+
+				while (temp != NULL && temp->pname == pname) {
+					if (temp->pname == pname) {
+						Electronics *temp1 = NULL;
+						temp1 = temp->prev;
+						temp1->next = temp->next;
+						temp->next->prev = temp1;
+						delete temp;
+						break;
+
+					}
+					temp = temp->next;
+				}
+			}
+	}
+
+
+	void sortedInsert(Electronics * arr[],int i, Electronics *newNode)
+	{
+		
+		if (arr[i] == NULL)
+			arr[i] = newNode;
+
+		else if (arr[i]->pname >= newNode->pname) {
+			newNode->next = arr[i];
+			newNode->next->prev = newNode;
+			arr[i] = newNode;
+		}
+
+		else {
+			Electronics* current = arr[i];
+
+			while (current->next != NULL && current->next->pname < newNode->pname) {
+				current = current->next;
+			}
+
+			newNode->next = current->next;
+
+			if (current->next != NULL)
+				newNode->next->prev = newNode;
+
+			current->next = newNode;
+			newNode->prev = current;
+		}
+	}
+
+
+
+
+	void Sortlinkedlist(Electronics *arr[],int i)  // Name k aitbar se sort krega
+	{
+		
+		Electronics *temp = NULL,*temp1=arr[i];
+		
+		while (temp1 != NULL) {
+
+			Electronics *next = temp1->next;
+
+			temp1->prev = temp1->next = NULL;
+
+			sortedInsert(&temp,i, temp1);
+
+			temp1 = next;
+		}
+		arr[i] = temp;
+	}  // end of function
+
+
+	bool binarysearch(Electronics *arr[], int i, string pname) {
+		Sortlinkedlist(arr, i);
+		bool found = false;
+		if (arr[i] == NULL) {
+			cout << "Nothing to show" << endl;
+		}
+		else {
+			Electronics *temp=arr[i];
+			int lb = 0, ub = 0,mid=0;
+
+			string *dArray;
+			dArray = new string[capacity];
+			int i = 0;
+			for (i=0,temp; temp != NULL;temp=temp->next,i++) {
+				dArray[i] = temp->pname;
+				ub++;
+			}
+
+			while (!found && lb <= ub) {
+				mid = (lb + ub) / 2;
+				if (dArray[mid] == pname) {
+					found = true;
+					//pos = mid;
+				}
+				else if (dArray[mid] > pname) {
+					ub = mid - 1;
+				}
+				else
+					lb = mid + 1;
+			}
+
+		}
+		return found;
+	} //end of function
+
+};
+
+
+void menu()
+{
+	Electronics *arr[5];
+	arr[0] = NULL;	//laptop l;
+	arr[1] = NULL;  //DigitalCamera d;
+	arr[2] = NULL;  //Television t;
+	arr[3] = NULL;  //Printers p;
+	arr[4] = NULL;  //HomeThetre h;
+
+	MainMenu:
+	system("cls");
+	system("color 3F");
+	int option, price,stockqty;
+	double weight;
+	string brand, pname, desc, supplier, status;
+	Functions obj;
+	
+
+	cout << "\n\n" << endl;
+	cout << "			=========================================" << endl;
+	cout << "			=	||\\ //||  ___		        =" << endl;
+	cout << "			=	|| \\//|| |    |\\  |  |   |      =" << endl;
+	cout << "			=	||    || |--- | \\ |  |	 |      =" << endl;
+	cout << "			=	||    || |___ |  \\|  |___|      =" << endl;
+	cout << "			=========================================" << endl;
+	cout << "\n\n" << endl;
+	cout << "Press the following buttons for your choice respectively" << endl;
+	cout << "1. Laptops\n" << endl;
+	cout << "2. Digital Camera\n" << endl;
+	cout << "3. Television\n" << endl;
+	cout << "4. Home Thetre\n" << endl;
+	cout << "5. Printers\n" << endl;
+	cout << "6. Logout  (Not working)" << endl;
+
+	cout << "		********ENTER YOUR CHOICE********\n" << endl;
+	cin >> option;
+
+	switch (option)
+	{
+	case 1:		//laptop 
+	{
+		jumplaptop:
+		int i = 0; // represents Laptop's array of linked list
+		system("cls");
+		cout << "******* Here You Can Add, Delete, Search and Display all the Laptops *******\n\n " << endl;
+
+		cout << "For Addition of Laptop in Inventory, Press 1\n" << endl;
+		cout << "For Deletion of Laptop in Inventory, Press 2\n" << endl;
+		cout << "For Searching of Laptop in Inventory, Press 3\n" << endl;
+		cout << "For Display All of Laptop in Inventory, Press 4\n" << endl;
+		cout << "Press 5 to go back to Main Menu\n" << endl;
+		cout << "Press 6 to Display from File of Laptop\n" << endl;
+
+		cin >> option;
+		switch (option) {
+		case 1:
+		{
+			string processor, sresolution, ram, harddisk, windows, videocard;
+			
+			tie(brand, pname, desc, supplier, status, weight, price, stockqty)= obj.InputOfCommonAttribute();
+
+
+			cout << "Enter Processor" << endl;
+			cin.get();
+			getline(cin, processor);
+			cout << "Enter Screen resolution" << endl;
+			cin.get();
+			getline(cin, sresolution);
+			cout << "Enter RAM Capacity" << endl;
+			cin.get();
+			getline(cin, ram);
+			cout << "Enter Hard Disk Capacity" << endl;
+			cin.get();
+			getline(cin, harddisk);
+			cout << "Enter Windows version" << endl;
+			cin.get();
+			getline(cin, windows);
+			cout << "Enter Video Card Specs" << endl;
+			cin.get();
+			getline(cin, videocard);
+
+			obj.insertatendofLaptop(arr, i, brand, pname, desc, supplier, status, weight, price, stockqty, processor, sresolution, ram, harddisk, windows, videocard);
+			goto jumplaptop;
+			break;
+		}
+		case 2:
+			cout << "Enter Product Name to be Deleted " << endl;
+			cin.get();
+			getline(cin, pname);
+			obj.deletenode(arr, i, pname);
+			//goto jumplaptop;
+
+			break;
+
+		case 3:
+			cout << "Enter Product Name to be Searched " << endl;
+			cin.get();
+			getline(cin, pname);
+			if (obj.binarysearch(arr, i, pname))
+				cout << "Found" << endl;
+			else
+				cout << "Not Found OR Does not Exist" << endl;
+			//goto jumplaptop;
+			break;
+		case 4:
+			/*cout << "Enter Product Name to be Searched " << endl;
+			getline(cin, pname);*/
+			obj.display(arr, i);
+			//goto jumplaptop;
+			break;
+		case 5:
+			goto MainMenu;
+			break;
+
+		case 6:
+		obj.DisplayfromfileLaptop(arr,i);
+		break;
+		} // end of nested switch
+
+		
+
+		break;
+	}
+	case 2:		//Digital Camera
+	{
+		DigitalCameraMenu:
+		system("cls");
+		int i = 1; // represents Digital Camera's array of linked list
+		cout << "******* Here You Can Add, Delete, Search and Display all the Digital Cameras *******\n\n " << endl;
+
+		cout << "For Addition of Digital Camera's in Inventory, Press 1\n" << endl;
+		cout << "For Deletion of Digital Camera's in Inventory, Press 2\n" << endl;
+		cout << "For Searching of Digital Camera's in Inventory, Press 3\n" << endl;
+		cout << "For Display All of Digital Camera's in Inventory, Press 4\n" << endl;
+		cout << "Press 5 to go back to Main Menu\n" << endl;
+
+		cin >> option;
+		switch (option) {
+		case 1:
+		{
+			string megapixel, flash, cardsupported, sresolution;
+
+			tie(brand, pname, desc, supplier, status, weight, price, stockqty) = obj.InputOfCommonAttribute();
+
+
+			cout << "Enter Mega Pixel" << endl;
+			cin.get();
+			getline(cin, megapixel);
+			cout << "Enter Screen resolution of Camera's Monitor" << endl;
+			cin.get();
+			getline(cin, sresolution);
+			cout << "Enter Card Supported Upto" << endl;
+			cin.get();
+			getline(cin, cardsupported);
+			cout << "Enter FlashGun" << endl;
+			cin.get();
+			getline(cin, flash);
+
+			obj.insertatendofDC(arr, i, brand, pname, desc, supplier, status, weight, price, stockqty, megapixel, sresolution, cardsupported, flash);
+			goto DigitalCameraMenu;
+			break;
+		}
+		case 2:
+			cout << "Enter Product Name to be Deleted " << endl;
+			cin.get();
+			getline(cin, pname);
+			obj.deletenode(arr, i, pname);
+			//goto DigitalCameraMenu;
+			break;
+
+		case 3:
+			cout << "Enter Product Name to be Searched " << endl;
+			cin.get();
+			getline(cin, pname);
+			if (obj.binarysearch(arr, i, pname))
+				cout << "Found" << endl;
+			else
+				cout << "Not Found OR Does not Exist" << endl;
+			//goto DigitalCameraMenu;
+			break;
+		case 4:
+			/*cout << "Enter Product Name to be Searched " << endl;
+			getline(cin, pname);*/
+			obj.display(arr, i);
+			//goto DigitalCameraMenu;
+			break;
+		case 5:
+			goto MainMenu;
+			break;
+		} // end of nested switch
+
+
+
+		break;
+	}
+	case 3:		// Television
+	{
+		TelevisionMenu:
+		int i = 2; //represents television array
+		system("cls");
+		
+		cout << "******* Here You Can Add, Delete, Search and Display all the Television's Inventory *******\n\n " << endl;
+
+		cout << "For Addition of Television's in Inventory, Press 1\n" << endl;
+		cout << "For Deletion of Television's in Inventory, Press 2\n" << endl;
+		cout << "For Searching of Television's in Inventory, Press 3\n" << endl;
+		cout << "For Display All of Television's in Inventory, Press 4\n" << endl;
+		cout << "Press 5 to go back to Main Menu\n" << endl;
+
+		cin >> option;
+		switch (option) {
+		case 1:
+		{
+			string cardsupported, sresolution, hdmi, usb, volts, height, width;
+
+			tie(brand, pname, desc, supplier, status, weight, price, stockqty) = obj.InputOfCommonAttribute();
+
+
+			cout << "Enter HDMI port availability" << endl;
+			cin.get();
+			getline(cin, hdmi);
+			cout << "Enter Screen resolution of Camera's Monitor" << endl;
+			cin.get();
+			getline(cin, sresolution);
+			cout << "Enter Card Supported Upto" << endl;
+			cin.get();
+			getline(cin, cardsupported);
+			cout << "Enter USB port availibility" << endl;
+			cin.get();
+			getline(cin, usb);
+			cout << "Enter Volts" << endl;
+			cin.get();
+			getline(cin, volts);
+			cout << "Enter Width of Screen" << endl;
+			cin.get();
+			getline(cin, width);
+			cout << "Enter Height of Screen" << endl;
+			cin.get();
+			getline(cin, height);
+
+			obj.insertatendoftelevision(arr, i, brand, pname, desc, supplier, status, weight, price, stockqty, cardsupported, sresolution, hdmi, usb,volts,height,width);
+			goto TelevisionMenu;
+			break;
+		}
+		case 2:
+			cout << "Enter Product Name to be Deleted " << endl;
+			cin.get();
+			getline(cin, pname);
+			obj.deletenode(arr, i, pname);
+			goto TelevisionMenu;
+			break;
+
+		case 3:
+			cout << "Enter Product Name to be Searched " << endl;
+			cin.get();
+			getline(cin, pname);
+			if (obj.binarysearch(arr, i, pname))
+				cout << "Found" << endl;
+			else
+				cout << "Not Found OR Does not Exist" << endl;
+			goto TelevisionMenu;
+			break;
+		case 4:
+			/*cout << "Enter Product Name to be Searched " << endl;
+			getline(cin, pname);*/
+			obj.display(arr, i);
+			break;
+		case 5:
+			goto MainMenu;
+			break;
+		} // end of nested switch
+
+
+
+		break;
+	}
+	case 4: // HomeThetre
+	{
+		int i = 3; //represents array of Homethetre
+		HomeThetreMenu:
+		system("cls");
+
+		cout << "******* Here You Can Add, Delete, Search and Display all the HomeThetre's Inventory *******\n\n " << endl;
+
+		cout << "For Addition of HomeThetre's in Inventory, Press 1\n" << endl;
+		cout << "For Deletion of HomeThetre's in Inventory, Press 2\n" << endl;
+		cout << "For Searching of HomeThetre's in Inventory, Press 3\n" << endl;
+		cout << "For Display All of HomeThetre's in Inventory, Press 4\n" << endl;
+		cout << "Press 5 to go back to Main Menu\n" << endl;
+
+		cin >> option;
+		switch (option) {
+		case 1:
+		{
+			string  cardsupported, bluetooth, channel, usb, volts;
+
+			tie(brand, pname, desc, supplier, status, weight, price, stockqty) = obj.InputOfCommonAttribute();
+
+
+			cout << "Enter Channel" << endl;
+			cin.get();
+			getline(cin, channel);
+			cout << "Enter Bluetooth availability" << endl;
+			cin.get();
+			getline(cin, bluetooth);
+			cout << "Enter Card Supported Upto" << endl;
+			cin.get();
+			getline(cin, cardsupported);
+			cout << "Enter USB port availibility" << endl;
+			cin.get();
+			getline(cin, usb);
+			cout << "Enter Volts" << endl;
+			cin.get();
+			getline(cin, volts);
+
+			obj.insertatendofHomethetre(arr, i, brand, pname, desc, supplier, status, weight, price, stockqty, cardsupported, bluetooth, channel, usb, volts);
+			goto HomeThetreMenu;
+			break;
+		}
+		case 2:
+			cout << "Enter Product Name to be Deleted " << endl;
+			cin.get();
+			getline(cin, pname);
+			obj.deletenode(arr, i, pname);
+			goto HomeThetreMenu;
+			break;
+
+		case 3:
+			cout << "Enter Product Name to be Searched " << endl;
+			cin.get();
+			getline(cin, pname);
+			if (obj.binarysearch(arr, i, pname))
+				cout << "Found" << endl;
+			else
+				cout << "Not Found OR Does not Exist" << endl;
+			goto HomeThetreMenu;
+			break;
+		case 4:
+			obj.display(arr, i);
+			goto HomeThetreMenu;
+			break;
+		case 5:
+			goto MainMenu;
+			break;
+		} // end of nested switch
+
+
+
+		break;
+	}
+	case 5: // Printers
+	{
+		PrinterMenu:
+		int i = 4; //represents array of printers
+
+		system("cls");
+
+		cout << "******* Here You Can Add, Delete, Search and Display all the Printer's Inventory *******\n\n " << endl;
+
+		cout << "For Addition of Printer's in Inventory, Press 1\n" << endl;
+		cout << "For Deletion of Printer's in Inventory, Press 2\n" << endl;
+		cout << "For Searching of Printer's in Inventory, Press 3\n" << endl;
+		cout << "For Display All of Printer's in Inventory, Press 4\n" << endl;
+		cout << "Press 5 to go back to Main Menu\n" << endl;
+
+		cin >> option;
+		switch (option) {
+		case 1:
+		{
+			string  cardsupported, bluetooth, functions, usb, volts, ptype, pcapability;
+
+			tie(brand, pname, desc, supplier, status, weight, price, stockqty) = obj.InputOfCommonAttribute();
+
+
+			cout << "Enter Functions of Printer's Capability like Scan,Fax" << endl;
+			getline(cin, functions);
+			cout << "Enter Bluetooth availability" << endl;
+			getline(cin, bluetooth);
+			cout << "Enter Card Supported Upto" << endl;
+			getline(cin, cardsupported);
+			cout << "Enter USB port availibility" << endl;
+			getline(cin, usb);
+			cout << "Enter Volts" << endl;
+			getline(cin, volts);
+			cout << "Enter Printer Type, whether it is Color or Monochrome" << endl;
+			getline(cin, usb);
+			cout << "Enter Printer's Capability of Printing Pages per Minute" << endl;
+			getline(cin, pcapability);
+
+			obj.insertatendofPrinters(arr, i, brand, pname, desc, supplier, status, weight, price, stockqty, cardsupported, bluetooth, functions, usb, volts, ptype, pcapability);
+			goto PrinterMenu;
+			break;
+		}
+		case 2:
+			cout << "Enter Product Name to be Deleted " << endl;
+			getline(cin, pname);
+			obj.deletenode(arr, i, pname);
+			goto PrinterMenu;
+			break;
+
+		case 3:
+			cout << "Enter Product Name to be Searched " << endl;
+			getline(cin, pname);
+			if (obj.binarysearch(arr, i, pname))
+				cout << "Found" << endl;
+			else
+				cout << "Not Found OR Does not Exist" << endl;
+			goto PrinterMenu;
+			break;
+		case 4:
+			/*cout << "Enter Product Name to be Searched " << endl;
+			getline(cin, pname);*/
+			obj.display(arr, i);
+			goto PrinterMenu;
+			break;
+		case 5:
+			goto MainMenu;
+			break;
+		} // end of nested switch
+
+
+
+
+		break;
+	}
+	case 6:
+	{
+		system("cls");
+		//int main();
+		break;
+	}
+
+	}
+}
+
+
+void main(void) {
+	
+	menu();
+
+	system("pause");
+
+}
